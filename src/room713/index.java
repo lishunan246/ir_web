@@ -27,7 +27,7 @@ public class index extends HttpServlet {
         PrintWriter writer=response.getWriter();
         for(int i: set)
         {
-            writer.println("<a href='view?id=" + i + "'>" + i + "</a>");
+            writer.println("<a href='view.jsp?id=" + i + "'>" + i + "</a>");
 
         }
 

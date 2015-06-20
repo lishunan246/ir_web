@@ -10,7 +10,7 @@
     <title></title>
   </head>
   <body>
-  <form action="search" method="get">
+  <form action="search.jsp" method="get">
     <input name="keyword"/>
     <input type="submit"/>
   </form>
