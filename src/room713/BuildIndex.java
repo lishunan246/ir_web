@@ -17,6 +17,6 @@ public class BuildIndex extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        IR.buildIndex();
     }
 }
