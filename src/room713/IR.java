@@ -10,10 +10,10 @@ import java.util.Set;
  *
  */
 public class IR {
-    private String path=System.getProperty("user.home")+"/ir_resource";
-    public static Integer passageNum = 0;
+    private static String path=System.getProperty("user.home")+"/ir_resource";
+    private static Integer passageNum = 0;
 
-    public void readFile(Integer from, Integer to){
+    public static void readFile(Integer from, Integer to){
         String filename;
         BufferedReader bfr;
         String line;
@@ -39,15 +39,15 @@ public class IR {
         }
     }
 
-    public Integer getPassageNum() {
+    public static Integer getPassageNum() {
         return passageNum;
     }
 
-    public void setPassageNum(Integer passageNum) {
-        this.passageNum = passageNum;
+    public static void setPassageNum(Integer passageNum) {
+        passageNum = passageNum;
     }
 
-    public void buildIndex(){
+    public static void buildIndex(){
         System.out.println("build start!");
         readFile(1, 1000);
 
@@ -70,9 +70,7 @@ public class IR {
         }
     }
 
-    public Set<Integer> searchEntrance(String query) {
-//        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
-//        IR ir2 = new IR();
+    public static void readIndex(){
         try {
             FileInputStream fis = new FileInputStream(path+"/tokenMap1000.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -93,7 +91,11 @@ public class IR {
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static Set<Integer> searchEntrance(String query) {
+//        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
+//        IR ir2 = new IR();
 //        String input;
 
         VSM vsm = new VSM(Tokenizer.tokenMap, getPassageNum());
