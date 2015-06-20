@@ -15,6 +15,7 @@
     <input name="keyword"/>
     <input type="submit"/>
   </form>
+  <a href="/buildindex">建立索引</a>
 
   </body>
 </html>
