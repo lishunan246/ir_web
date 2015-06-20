@@ -12,6 +12,15 @@ import java.util.Set;
 public class IR {
     private static String path=System.getProperty("user.home")+"/ir_resource";
     private static Integer passageNum = 0;
+    private static Boolean flag = true;
+
+    public static void initialize() {
+        if (flag) {
+            readIndex();
+            flag = false;
+        }
+        System.out.println("IR init!");
+    }
 
     public static void readFile(Integer from, Integer to){
         String filename;
