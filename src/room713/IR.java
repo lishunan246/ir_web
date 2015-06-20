@@ -1,26 +1,17 @@
 package room713;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Set;
 
 
 /**
  * Created by Henry on 2015/6/19.
+ *
  */
 public class IR {
-    private Integer passageNum;
-
     String path=System.getProperty("user.home")+"/ir_resource";
+    private Integer passageNum;
 
     IR(){
         passageNum = 0;
@@ -87,7 +78,9 @@ public class IR {
             FileInputStream fis = new FileInputStream(path+"/tokenMap1000.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            tknz2.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
+
+            tknz2.tokenMap = Indexer.parseIndex(ois.readObject());
+            // (HashMap<String, HashMap<Integer, room713.Indexer>>) ois.readObject();
             ois.close();
             fis.close();
             FileInputStream fis2 = new FileInputStream(path+"/passageNum1000.ser");
@@ -95,11 +88,7 @@ public class IR {
             ir2.setPassageNum((Integer) ois2.readObject());
             ois2.close();
             fis2.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
 

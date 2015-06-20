@@ -1,14 +1,13 @@
 package room713;
 
-/**
- * Created by Li Shunan on 2015/6/20.
- */
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Henry on 2015/6/16.
+ *
  */
 public class Indexer implements Serializable{
     private Integer docID;
@@ -23,6 +22,9 @@ public class Indexer implements Serializable{
         updatePosList(pos);
     }
 
+    public static HashMap<String, HashMap<Integer, room713.Indexer>> parseIndex(Object o) {
+        return (HashMap<String, HashMap<Integer, room713.Indexer>>) o;
+    }
 
     public Integer getTf() {
         return tf;
