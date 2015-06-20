@@ -10,18 +10,15 @@ import java.util.Set;
  *
  */
 public class IR {
-    String path=System.getProperty("user.home")+"/ir_resource";
-    private Integer passageNum;
+    private String path=System.getProperty("user.home")+"/ir_resource";
+    public static Integer passageNum = 0;
 
-    IR(){
-        passageNum = 0;
-    }
-
-    public void readFile(Integer from, Integer to, Tokenizer tknz){
+    public void readFile(Integer from, Integer to){
         String filename;
         BufferedReader bfr;
         String line;
         String passage;
+        Tokenizer tknz = new Tokenizer(path +"/stopwords.txt");
         for(Integer i=from; i<=to; i++){
             passage = "";
             filename = path+ "/Reuters/" + i.toString() + ".html";
@@ -51,17 +48,16 @@ public class IR {
     }
 
     public void buildIndex(){
-        Tokenizer tknz = new Tokenizer(path +"/stopwords.txt");
-        IR ir = new IR();
-        ir.readFile(1, 1000, tknz);
+        System.out.println("build start!");
+        readFile(1, 1000);
 
         try {
             FileOutputStream fos = new FileOutputStream(path+"/tokenMap1000.ser");
             FileOutputStream fos2 = new FileOutputStream(path +"/passageNum1000.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
-            oos.writeObject(tknz.tokenMap);
-            oos2.writeObject(ir.getPassageNum());
+            oos.writeObject(Tokenizer.tokenMap);
+            oos2.writeObject(getPassageNum());
             oos.close();
             oos2.close();
             fos.close();
@@ -74,38 +70,40 @@ public class IR {
         }
     }
 
-    public Set<Integer> entry(String s) {
-        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
-        IR ir2 = new IR();
+    public Set<Integer> searchEntrance(String query) {
+//        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
+//        IR ir2 = new IR();
         try {
             FileInputStream fis = new FileInputStream(path+"/tokenMap1000.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
 
 
 //            tknz2.tokenMap = Indexer.parseIndex(ois.readObject());
-            System.out.println("Start Read!");
-            tknz2.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
+            System.out.println("read start!");
+//            tknz2.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
+            Tokenizer.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
             ois.close();
             fis.close();
             FileInputStream fis2 = new FileInputStream(path+"/passageNum1000.ser");
             ObjectInputStream ois2 = new ObjectInputStream(fis2);
-            ir2.setPassageNum((Integer) ois2.readObject());
+            setPassageNum((Integer) ois2.readObject());
             ois2.close();
             fis2.close();
-            System.out.println("Done Read!");
+            System.out.println("read done!");
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
 
 //        String input;
 
-        VSM vsm = new VSM(tknz2.tokenMap, ir2.getPassageNum());
+        VSM vsm = new VSM(Tokenizer.tokenMap, getPassageNum());
         HashMap<Integer,Double> scoreresult;
 
 //        System.out.println("input a string");
 //        Scanner in = new Scanner(System.in);
 //        input = in.nextLine();
-        scoreresult = vsm.score(tknz2.tokenize(s));
+        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
+        scoreresult = vsm.score(tknz2.tokenize(query));
 //        in.close();
         return scoreresult.keySet();
     }

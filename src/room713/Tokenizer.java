@@ -10,7 +10,7 @@ public class Tokenizer {
     private String passage;
     private String punctuation;
     private List stopwords = new ArrayList<String>();
-    public HashMap<String, HashMap<Integer, Indexer>> tokenMap = new HashMap<>();
+    public static HashMap<String, HashMap<Integer, Indexer>> tokenMap = new HashMap<>();
 
     Tokenizer(String stopwordsPath){
         try {

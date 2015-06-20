@@ -16,7 +16,7 @@ public class VSM {
      * member
      */
 
-    public HashMap<String, HashMap<Integer, Indexer>> tokenMap;
+//    public HashMap<String, HashMap<Integer, Indexer>> Tokenizer.tokenMap;
     double N;
 
     /**
@@ -24,7 +24,7 @@ public class VSM {
      */
 
     VSM(HashMap<String, HashMap<Integer, Indexer>>map, Integer n){
-        tokenMap = map;
+        Tokenizer.tokenMap = map;
         N = n;
     }
 
@@ -42,8 +42,8 @@ public class VSM {
 
         //build doclist,calculate df
         for(int i = 0;i <  Query.size(); i ++){
-            if(tokenMap.containsKey(Query.get(i))){
-                temp = tokenMap.get(Query.get(i));
+            if(Tokenizer.tokenMap.containsKey(Query.get(i))){
+                temp = Tokenizer.tokenMap.get(Query.get(i));
 
                 int df = temp.size();
                 dflist.put((String) Query.get(i), df);
@@ -72,7 +72,7 @@ public class VSM {
             Integer key = (Integer)entry.getKey();
 
             for(int j = 0;j <Query.size(); j ++){
-                temp2 = tokenMap.get(Query.get(j));
+                temp2 = Tokenizer.tokenMap.get(Query.get(j));
                 if(temp2.containsKey(key)){
                     double dfForCos = dflist.get(Query.get(j));
                     idf = Math.log(N/dfForCos );

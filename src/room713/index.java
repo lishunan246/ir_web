@@ -22,7 +22,7 @@ public class index extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String s=request.getParameter("keyword");
         IR ir=new IR();
-        Set<Integer> set=ir.entry(s);
+        Set<Integer> set=ir.searchEntrance(s);
 
         PrintWriter writer=response.getWriter();
         for(int i: set)
