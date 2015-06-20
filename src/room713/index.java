@@ -30,5 +30,7 @@ public class index extends HttpServlet {
             writer.println(i);
 
         }
+
+//        ir.buildIndex();
     }
 }

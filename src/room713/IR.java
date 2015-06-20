@@ -50,28 +50,31 @@ public class IR {
         this.passageNum = passageNum;
     }
 
-    public Set<Integer> entry(String s) {
-//        Tokenizer tknz = new Tokenizer(path +"/stopwords.txt");
-//        IR ir = new IR();
-//        ir.readFile(1, 1000, tknz);
-//
-//        try {
-//            FileOutputStream fos = new FileOutputStream(path+"/tokenMap1000.ser");
-//            FileOutputStream fos2 = new FileOutputStream(path +"/passageNum1000.ser");
-//            ObjectOutputStream oos = new ObjectOutputStream(fos);
-//            ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
-//            oos.writeObject(tknz.tokenMap);
-//            oos2.writeObject(ir.getPassageNum());
-//            oos.close();
-//            oos2.close();
-//            fos.close();
-//            fos2.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    public void buildIndex(){
+        Tokenizer tknz = new Tokenizer(path +"/stopwords.txt");
+        IR ir = new IR();
+        ir.readFile(1, 1000, tknz);
 
+        try {
+            FileOutputStream fos = new FileOutputStream(path+"/tokenMap1000.ser");
+            FileOutputStream fos2 = new FileOutputStream(path +"/passageNum1000.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
+            oos.writeObject(tknz.tokenMap);
+            oos2.writeObject(ir.getPassageNum());
+            oos.close();
+            oos2.close();
+            fos.close();
+            fos2.close();
+            System.out.println("build done!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Set<Integer> entry(String s) {
         Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
         IR ir2 = new IR();
         try {
@@ -79,8 +82,9 @@ public class IR {
             ObjectInputStream ois = new ObjectInputStream(fis);
 
 
-            tknz2.tokenMap = Indexer.parseIndex(ois.readObject());
-            // (HashMap<String, HashMap<Integer, room713.Indexer>>) ois.readObject();
+//            tknz2.tokenMap = Indexer.parseIndex(ois.readObject());
+            System.out.println("Start Read!");
+            tknz2.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
             ois.close();
             fis.close();
             FileInputStream fis2 = new FileInputStream(path+"/passageNum1000.ser");
@@ -88,6 +92,7 @@ public class IR {
             ir2.setPassageNum((Integer) ois2.readObject());
             ois2.close();
             fis2.close();
+            System.out.println("Done Read!");
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
