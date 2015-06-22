@@ -23,7 +23,7 @@ public class VSM {
      * function
      */
 
-    VSM(HashMap<String, HashMap<Integer, Indexer>>map, Integer n){
+    VSM(Integer n){
         Tokenizer.tokenMap = map;
         N = n;
     }
