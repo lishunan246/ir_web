@@ -25,6 +25,7 @@ public class index extends HttpServlet {
 
         //Set<Integer> set = IR.searchEntrance(s);
         ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(s);
+//        String corrected = IR.spellCorrect(s);
         PrintWriter writer=response.getWriter();
         for(Map.Entry<Integer,Double> entry: list)
         {

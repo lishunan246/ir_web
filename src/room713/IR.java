@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 
 /**
@@ -18,6 +19,7 @@ public class IR {
     public static void initialize() {
         if (flag) {
             readIndex();
+            Tokenizer tokenizer = new Tokenizer(path + "/stopwords.txt");
             flag = false;
         }
         System.out.println("IR init!");
@@ -39,10 +41,10 @@ public class IR {
                     passage += line;
                 }
                 tknz.indexing(i, passage);
+                tknz.dicting(passage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 setPassageNum(getPassageNum()-1);
-                continue;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -64,17 +66,20 @@ public class IR {
         try {
             FileOutputStream fos = new FileOutputStream(path+"/tokenMap1000.ser");
             FileOutputStream fos2 = new FileOutputStream(path +"/passageNum1000.ser");
+            FileOutputStream fos3 = new FileOutputStream(path +"/dictMap1000.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
+            ObjectOutputStream oos3 = new ObjectOutputStream(fos3);
             oos.writeObject(Tokenizer.tokenMap);
             oos2.writeObject(getPassageNum());
+            oos3.writeObject(Tokenizer.dictMap);
             oos.close();
             oos2.close();
+            oos3.close();
             fos.close();
             fos2.close();
+            fos3.close();
             System.out.println("build done!");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,13 +87,9 @@ public class IR {
 
     public static void readIndex(){
         try {
+            System.out.println("read start!");
             FileInputStream fis = new FileInputStream(path+"/tokenMap1000.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
-
-
-//            tknz2.tokenMap = Indexer.parseIndex(ois.readObject());
-            System.out.println("read start!");
-//            tknz2.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
             Tokenizer.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
             ois.close();
             fis.close();
@@ -97,6 +98,11 @@ public class IR {
             setPassageNum((Integer) ois2.readObject());
             ois2.close();
             fis2.close();
+            FileInputStream fis3 = new FileInputStream(path+"/dictMap1000.ser");
+            ObjectInputStream ois3 = new ObjectInputStream(fis3);
+            Tokenizer.dictMap = (HashMap<String, Integer>) ois3.readObject();
+            ois3.close();
+            fis3.close();
             System.out.println("read done!");
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -115,7 +121,7 @@ public class IR {
 //        Scanner in = new Scanner(System.in);
 //        input = in.nextLine();
         Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
-        scoreresult = vsm.score(tknz2.tokenize(query));
+        scoreresult = vsm.score(tknz2.tokenize(query, true));
         Topk topk = new Topk(scoreresult);
         //PriorityQueue<Map.Entry<Integer,Double>> topKeyResult = topk.getResult();
         return topk.getResult();
@@ -123,4 +129,22 @@ public class IR {
 //        in.close();
         //return scoreresult.keySet();
     }
+
+    public static ArrayList<String> spellCorrect(String query){
+        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
+        SpellCorrector sc = new SpellCorrector();
+        return sc.correct(tknz2.tokenize(query, false));
+    }
+
+    public static ArrayList<String> tokenizeWithStopwordNoStem(String text){
+        StringTokenizer st = new StringTokenizer(text, Tokenizer.punctuation);
+        String tempWord;
+        ArrayList<String> query = new ArrayList<>();
+        while (st.hasMoreTokens()){
+            tempWord = st.nextToken();
+            query.add(tempWord);
+        }
+        return query;
+    }
+
 }

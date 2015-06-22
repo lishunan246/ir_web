@@ -1,6 +1,8 @@
 <%@ page import="room713.IR" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="room713.Tokenizer" %>
+<%@ page import="javax.swing.text.StyledEditorKit" %>
 <%--
   Created by IntelliJ IDEA.
   User: Li Shunan
@@ -38,7 +40,27 @@
                 <%
                     String keyword = request.getParameter("keyword");
                     String t=request.getParameter("p");
-                    ArrayList<Map.Entry<Integer, Double>> list = IR.searchEntrance(keyword);
+                    //Set<Integer> set = IR.searchEntrance(keyword);
+                    ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword);
+                    ArrayList<String> queryList = IR.tokenizeWithStopwordNoStem(keyword);
+                    ArrayList<String> corrected = IR.spellCorrect(keyword);
+                    //for (int k : set) {
+//            for (int k : list) {
+                    String correctString = "";
+                    int k = 0;
+                    Boolean wrong = false;
+                    for(String query: queryList){
+                        if(Tokenizer.stopwords.contains(query)){
+                            correctString += " " + query;
+                        }else{
+                            if(!query.equals(corrected.get(k))){
+                                wrong = true;
+                            }
+                            correctString += " " + corrected.get(k++);
+                        }
+                    }
+
+                    //ArrayList<Map.Entry<Integer, Double>> list = IR.searchEntrance(keyword);
                     int count=list.size();
                     int p_count=(count%10==0)?count/10:count/10+1;
                     int p=1;
@@ -55,16 +77,39 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
+            <% if(wrong){%>
+            <p><a href="search.jsp?keyword=<% out.print(correctString.substring(1));%>">
+                你是否要搜索
+                <%
+
+                        out.print(correctString.substring(1));
+
+
+                %>？</a>
+            </p>
+            <%}
+                if(list.size()!=0)
+                {
+            %>
+
             检索到<% out.print(list.size());%>条结果, 当前显示第<% out.print(10*(p-1)+1);%>~<%out.print((list.size()<10*p+1)?list.size():10*p);%>条结果。
+            <%
+                }
+                else
+                {
+            %>
+            未找到任何结果。
+            <%}%>
         </div>
     </div>
 
     <table class="table table-hover table-bordered">
         <%
-            //for (Map.Entry<Integer, Double> entry : list) {
+
             for(int i=10*(p-1);i<10*p&&i<list.size();i++)
             {
                 Map.Entry<Integer, Double> entry=list.get(i);
+
         %>
         <tr>
             <td>
