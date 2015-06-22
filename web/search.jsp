@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    <table class="table table-hover table-bordered">
+    <table id="result_table" class="table table-hover table-bordered">
         <%
 
             for(int i=10*(p-1);i<10*p&&i<list.size();i++)
@@ -156,7 +156,7 @@
 <script type="text/javascript" src="js/hilitor.js"></script>
 <script type="text/javascript">
 
-    var myHilitor = new Hilitor("content");
+    var myHilitor = new Hilitor("result_table");
     myHilitor.setMatchType("open");
     myHilitor.apply("<%
         out.print(keyword);

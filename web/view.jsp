@@ -38,7 +38,7 @@
 
     </h1>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default" id="content">
         <div class="panel-body">
             <%
                 out.println(room713.ViewFile.getContent(id));
