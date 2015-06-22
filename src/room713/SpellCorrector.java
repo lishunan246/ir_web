@@ -61,6 +61,9 @@ public class SpellCorrector {
                     }
                 }
             }
+            if(minED > 3){
+                minTerm = query;
+            }
             corrected.add(minTerm);
         }
         return corrected;
