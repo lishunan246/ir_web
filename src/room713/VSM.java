@@ -24,7 +24,7 @@ public class VSM {
      */
 
     VSM(Integer n){
-        Tokenizer.tokenMap = map;
+       // Tokenizer.tokenMap = map;
         N = n;
     }
 

@@ -29,20 +29,22 @@
 </head>
 <body>
 <div class="container">
+    <%
+        String id = request.getParameter("id");
+
+    %>
     <h1>
-        <%
-            String id = request.getParameter("id");
-            out.println(room713.ViewFile.getTitle(id));
-        %>
+        <a href="${pageContext.request.contextPath}/view?id=<% out.println(id);%>"><% out.println(room713.ViewFile.getTitle(id));%></a>
+
     </h1>
 
-    <a href="/view?id=<% out.println(id);%>">查看原始文件</a>
-
-    <p>
-        <%
-            out.println(room713.ViewFile.getContent(id));
-        %>
-    </p>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <%
+                out.println(room713.ViewFile.getContent(id));
+            %>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="js/hilitor.js"></script>
 <script type="text/javascript">

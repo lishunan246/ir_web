@@ -1,6 +1,4 @@
 <%@ page import="room713.IR" %>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.Vector" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%--
@@ -35,33 +33,77 @@
 <body>
 <div class="container">
     <h1>
-        <%
-            String keyword = request.getParameter("keyword");
+        <a href="index.jsp">
 
-            out.print(keyword);
-        %>
+                <%
+                    String keyword = request.getParameter("keyword");
+                    String t=request.getParameter("p");
+                    ArrayList<Map.Entry<Integer, Double>> list = IR.searchEntrance(keyword);
+                    int count=list.size();
+                    int p_count=(count%10==0)?count/10:count/10+1;
+                    int p=1;
+                    if(t!=null)
+                    {
+                        p=Integer.valueOf(t);
+                    }
+
+                    out.print(keyword);
+
+                %>
+        </a>
     </h1>
 
+    <div class="panel panel-default">
+        <div class="panel-body">
+            检索到<% out.print(list.size());%>条结果, 当前显示第<% out.print(10*(p-1)+1);%>~<%out.print((list.size()<10*p+1)?list.size():10*p);%>条结果。
+        </div>
+    </div>
 
-    <p>
-    <ol>
+    <table class="table table-hover table-bordered">
         <%
-            //Set<Integer> set = IR.searchEntrance(keyword);
-            ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword);
-            //for (int i : set) {
-//            for (int i : list) {
-            for(Map.Entry<Integer,Double> entry:list){
+            //for (Map.Entry<Integer, Double> entry : list) {
+            for(int i=10*(p-1);i<10*p&&i<list.size();i++)
+            {
+                Map.Entry<Integer, Double> entry=list.get(i);
         %>
-        <li>
-            <a href="view.jsp?keyword=<% out.print(keyword);%>&id=<% out.print(entry.getKey().intValue());%>"><%
-                out.println(room713.ViewFile.getTitle(Integer.toString(entry.getKey().intValue())));%></a></li>
-            <% out.print(entry.getValue().doubleValue());%>
+        <tr>
+            <td>
+                <a href="view.jsp?keyword=<% out.print(keyword);%>&id=<% out.print(entry.getKey().intValue());%>">
+                    <% out.println(room713.ViewFile.getTitle(Integer.toString(entry.getKey().intValue())));%>
+                </a>
+                <% out.print(entry.getValue().doubleValue());%>
+            </td>
+        </tr>
         <%
             }
         %>
-    </ol>
-    </p>
-</div>
+    </table>
+
+    </div>
+
+    <div class="container">
+        <nav>
+            <ul class="pager">
+                <% if((p-1)>0)
+                {
+
+                %>
+                <li><a href="search.jsp?keyword=<% out.print(keyword); %>&p=<% out.print(p-1);%>">上一页</a></li>
+                <%
+                    }
+
+                    if((p+1)<=p_count)
+                    {
+                %>
+                <li><a href="search.jsp?keyword=<% out.print(keyword); %>&p=<% out.print(p+1);%>">下一页</a></li>
+                <%
+                    }
+                %>
+            </ul>
+        </nav>
+    </div>
+
+
 
 <script type="text/javascript" src="js/hilitor.js"></script>
 <script type="text/javascript">

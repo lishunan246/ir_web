@@ -31,9 +31,9 @@
 
           <button class="btn btn-primary" type="submit">搜索</button>
       </form>
-      <a href="/buildindex">建立索引</a>
+      <a href="${pageContext.request.contextPath}/buildindex">建立索引</a>
   </div>
-  <style>
+  <style scoped>
       #form-search {
           padding-top: 10%;
           width: 35em;
