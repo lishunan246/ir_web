@@ -8,21 +8,19 @@ import java.util.*;
  */
 public class Tokenizer {
     private String passage;
-    private String punctuation;
-    private List stopwords = new ArrayList<String>();
+    public static String punctuation = " \t\n\r\f,.:;?![]0123456789()+-*/<>\"@#$%^&~\\|";
+    public static ArrayList<String> stopwords = new ArrayList<>();
     public static HashMap<String, HashMap<Integer, Indexer>> tokenMap = new HashMap<>();
+    public static HashMap<String, Integer> dictMap = new HashMap<>();
 
     Tokenizer(String stopwordsPath){
         try {
             passage = "";
-            punctuation = " \t\n\r\f,.:;?![]0123456789()+-*/<>\"@#$%^&~\\|";
             BufferedReader bfr1 = new BufferedReader(new FileReader(stopwordsPath));
             String line;
             while((line = bfr1.readLine()) != null){
                 stopwords.add(line);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,13 +53,34 @@ public class Tokenizer {
         }
     }
 
-    public ArrayList<String> tokenize(String text){
+    public void dicting(String text){
+        StringTokenizer st = new StringTokenizer(text, punctuation);
+        String tempWord;
+//        Integer pos = 0;
+
+        while(st.hasMoreTokens()){
+//            pos += 1;
+            if(!isStopword(tempWord = st.nextToken())) {
+//                tempWord = stemTerm(tempWord);
+                tempWord = tempWord.toLowerCase();
+                if(!dictMap.containsKey(tempWord)){
+                    dictMap.put(tempWord, 1);
+                }else {
+                    dictMap.put(tempWord, dictMap.get(tempWord)+1);
+                }
+            }
+        }
+    }
+
+    public ArrayList<String> tokenize(String text, Boolean doStem){
         StringTokenizer st = new StringTokenizer(text, punctuation);
         String tempWord;
         ArrayList<String> query = new ArrayList<>();
         while (st.hasMoreTokens()){
             if(!isStopword((tempWord = st.nextToken()))){
-                tempWord = stemTerm(tempWord);
+                if(doStem) {
+                    tempWord = stemTerm(tempWord);
+                }
                 query.add(tempWord);
             }
         }
@@ -69,21 +88,17 @@ public class Tokenizer {
     }
 
     public Boolean isStopword(String word){
-        if(stopwords.contains(word)){
-            return true;
-        }else{
-            return false;
-        }
+        return stopwords.contains(word);
     }
 
     public String stemTerm(String term){
         char[] w = new char[501];
         Stemmer s = new Stemmer();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         int i = 0;
         while(i < term.length()){
-            int ch = 0;
+            int ch;
             ch = term.charAt(i++);
             if (Character.isLetter((char) ch))
             {

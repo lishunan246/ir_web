@@ -3,6 +3,8 @@
 <%@ page import="java.util.Vector" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="room713.Tokenizer" %>
+<%@ page import="javax.swing.text.StyledEditorKit" %>
 <%--
   Created by IntelliJ IDEA.
   User: Li Shunan
@@ -48,8 +50,26 @@
         <%
             //Set<Integer> set = IR.searchEntrance(keyword);
             ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword);
+            ArrayList<String> queryList = IR.tokenizeWithStopwordNoStem(keyword);
+            ArrayList<String> corrected = IR.spellCorrect(keyword);
             //for (int i : set) {
 //            for (int i : list) {
+            String correctString = "";
+            int i = 0;
+            Boolean wrong = false;
+            for(String query: queryList){
+                if(Tokenizer.stopwords.contains(query)){
+                    correctString += " " + query;
+                }else{
+                    if(!query.equals(corrected.get(i))){
+                        wrong = true;
+                    }
+                    correctString += " " + corrected.get(i++);
+                }
+            }
+            if(wrong){
+                out.println(correctString.substring(1));
+            }
             for(Map.Entry<Integer,Double> entry:list){
         %>
         <li>
