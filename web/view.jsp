@@ -45,6 +45,11 @@
             %>
         </div>
     </div>
+
+
+        <button onclick="window.history.back();" class="btn btn-default">
+            返回
+        </button>
 </div>
 <script type="text/javascript" src="js/hilitor.js"></script>
 <script type="text/javascript">

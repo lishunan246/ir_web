@@ -116,7 +116,10 @@
                 <a href="view.jsp?keyword=<% out.print(keyword);%>&id=<% out.print(entry.getKey().intValue());%>">
                     <% out.println(room713.ViewFile.getTitle(Integer.toString(entry.getKey().intValue())));%>
                 </a>
-                <% out.print(entry.getValue().doubleValue());%>
+                <p>
+                    <% out.print(entry.getValue().doubleValue());%>
+                </p>
+
             </td>
         </tr>
         <%
