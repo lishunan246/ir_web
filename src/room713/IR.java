@@ -49,11 +49,11 @@ public class IR {
     }
 
     public static Integer getPassageNum() {
-        return passageNum;
+        return IR.passageNum;
     }
 
     public static void setPassageNum(Integer passageNum) {
-        passageNum = passageNum;
+        IR.passageNum = passageNum;
     }
 
     public static void buildIndex(){
@@ -107,7 +107,7 @@ public class IR {
 //        IR ir2 = new IR();
 //        String input;
 
-        VSM vsm = new VSM(Tokenizer.tokenMap, getPassageNum());
+        VSM vsm = new VSM(getPassageNum());
         HashMap<Integer,Double> scoreresult;
 
 //        System.out.println("input a string");

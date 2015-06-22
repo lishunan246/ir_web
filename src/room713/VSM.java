@@ -23,8 +23,7 @@ public class VSM {
      * function
      */
 
-    VSM(HashMap<String, HashMap<Integer, Indexer>>map, Integer n){
-        Tokenizer.tokenMap = map;
+    VSM(Integer n) {
         N = n;
     }
 
@@ -79,7 +78,7 @@ public class VSM {
                     float tf = temp2.get(key).getTf();
                     wf = 1 + Math.log(tf);
                     wf_idf = wf_idf + wf*idf;
-                    fenmu = fenmu + Math.pow(wf_idf,2);;
+                    fenmu = fenmu + Math.pow(wf_idf, 2);
                 }
             }
 
