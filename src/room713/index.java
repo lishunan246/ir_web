@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Li Shunan on 2015/6/20.
@@ -22,12 +23,12 @@ public class index extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String s=request.getParameter("keyword");
 
-        Set<Integer> set = IR.searchEntrance(s);
-
+        //Set<Integer> set = IR.searchEntrance(s);
+        ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(s);
         PrintWriter writer=response.getWriter();
-        for(int i: set)
+        for(Map.Entry<Integer,Double> entry: list)
         {
-            writer.println("<a href='view.jsp?id=" + i + "'>" + i + "</a>");
+            writer.println("<a href='view.jsp?id=" + entry.getKey().intValue() + "'>" + entry.getKey().intValue() + "</a>");
 
         }
 

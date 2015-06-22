@@ -1,8 +1,9 @@
 package room713;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.Map;
 
 
 /**
@@ -102,7 +103,7 @@ public class IR {
         }
     }
 
-    public static Set<Integer> searchEntrance(String query) {
+    public static  ArrayList<Map.Entry<Integer,Double>> searchEntrance(String query) {
 //        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
 //        IR ir2 = new IR();
 //        String input;
@@ -115,7 +116,11 @@ public class IR {
 //        input = in.nextLine();
         Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
         scoreresult = vsm.score(tknz2.tokenize(query));
+        Topk topk = new Topk(scoreresult);
+        //PriorityQueue<Map.Entry<Integer,Double>> topKeyResult = topk.getResult();
+        return topk.getResult();
+
 //        in.close();
-        return scoreresult.keySet();
+        //return scoreresult.keySet();
     }
 }

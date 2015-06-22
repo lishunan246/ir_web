@@ -79,11 +79,12 @@ public class VSM {
                     float tf = temp2.get(key).getTf();
                     wf = 1 + Math.log(tf);
                     wf_idf = wf_idf + wf*idf;
-                    fenmu = fenmu + Math.pow(wf_idf,2);;
+                    fenmu = fenmu + Math.pow(wf_idf,2);
                 }
             }
 
             result.put(key, wf_idf);
+            System.out.println(wf_idf);
 
 
 
