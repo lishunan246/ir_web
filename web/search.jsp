@@ -1,5 +1,8 @@
 <%@ page import="room713.IR" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="java.util.Vector" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
 <%--
   Created by IntelliJ IDEA.
   User: Li Shunan
@@ -43,13 +46,16 @@
     <p>
     <ol>
         <%
-            Set<Integer> set = IR.searchEntrance(keyword);
-
-            for (int i : set) {
+            //Set<Integer> set = IR.searchEntrance(keyword);
+            ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword);
+            //for (int i : set) {
+//            for (int i : list) {
+            for(Map.Entry<Integer,Double> entry:list){
         %>
         <li>
-            <a href="view.jsp?keyword=<% out.print(keyword);%>&id=<% out.print(i);%>"><%
-                out.println(room713.ViewFile.getTitle(Integer.toString(i)));%></a></li>
+            <a href="view.jsp?keyword=<% out.print(keyword);%>&id=<% out.print(entry.getKey().intValue());%>"><%
+                out.println(room713.ViewFile.getTitle(Integer.toString(entry.getKey().intValue())));%></a></li>
+            <% out.print(entry.getValue().doubleValue());%>
         <%
             }
         %>
