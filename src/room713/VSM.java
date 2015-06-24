@@ -1,11 +1,6 @@
 package room713;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-
+import java.util.*;
 
 
 /**
@@ -34,8 +29,8 @@ public class VSM {
 
         HashMap<Integer, Indexer>  doclist = new HashMap<>();
         HashMap<String, Integer> dflist = new HashMap<>();
-        HashMap<Integer, Indexer>  temp;
-        HashMap<Integer, Indexer>  temp2;
+        TreeMap<Integer, Indexer> temp;
+        TreeMap<Integer, Indexer>  temp2;
 
 //        double score;
 

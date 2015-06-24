@@ -10,7 +10,7 @@ public class Tokenizer {
     private String passage;
     public static String punctuation = " \t\n\r\f,.:;?![]0123456789()+-*/<>\"@#$%^&~\\|";
     public static ArrayList<String> stopwords = new ArrayList<>();
-    public static HashMap<String, HashMap<Integer, Indexer>> tokenMap = new HashMap<>();
+    public static HashMap<String, TreeMap<Integer, Indexer>> tokenMap = new HashMap<>();
     public static HashMap<String, Integer> dictMap = new HashMap<>();
 
     Tokenizer(String stopwordsPath){
@@ -36,7 +36,7 @@ public class Tokenizer {
             if(!isStopword(tempWord = st.nextToken())) {
                 tempWord = stemTerm(tempWord);
                 if(!tokenMap.containsKey(tempWord)){
-                    HashMap<Integer, Indexer> docIDMap = new HashMap<>();
+                    TreeMap<Integer, Indexer> docIDMap = new TreeMap<>();
                     Indexer indexer = new Indexer(docID, pos);
                     docIDMap.put(docID, indexer);
                     tokenMap.put(tempWord, docIDMap);
@@ -72,7 +72,7 @@ public class Tokenizer {
         }
     }
 
-    public ArrayList<String> tokenize(String text, Boolean doStem){
+    public static ArrayList<String> tokenize(String text, Boolean doStem){
         StringTokenizer st = new StringTokenizer(text, punctuation);
         String tempWord;
         ArrayList<String> query = new ArrayList<>();
@@ -87,11 +87,11 @@ public class Tokenizer {
         return query;
     }
 
-    public Boolean isStopword(String word){
+    public static Boolean isStopword(String word){
         return stopwords.contains(word);
     }
 
-    public String stemTerm(String term){
+    public static String stemTerm(String term){
         char[] w = new char[501];
         Stemmer s = new Stemmer();
         StringBuilder sb = new StringBuilder();
@@ -141,6 +141,8 @@ public class Tokenizer {
         }
         return sb.toString();
     }
+
+
 
 //    public static void main(String[] args) {
 //        Tokenizer tknz = new Tokenizer("resource/stopwords.txt");

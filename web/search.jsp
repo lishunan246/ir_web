@@ -41,7 +41,8 @@
                     String keyword = request.getParameter("keyword");
                     String t=request.getParameter("p");
                     //Set<Integer> set = IR.searchEntrance(keyword);
-                    ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword);
+                    String type = "BoolSearch";
+                    ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword, type);
                     ArrayList<String> queryList = IR.tokenizeWithStopwordNoStem(keyword);
                     ArrayList<String> corrected = IR.spellCorrect(keyword);
                     //for (int k : set) {

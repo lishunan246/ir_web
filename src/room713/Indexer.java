@@ -2,7 +2,6 @@ package room713;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,10 +19,6 @@ public class Indexer implements Serializable{
         posList = new ArrayList<Integer>();
         updateTf();
         updatePosList(pos);
-    }
-
-    public static HashMap<String, HashMap<Integer, room713.Indexer>> parseIndex(Object o) {
-        return (HashMap<String, HashMap<Integer, room713.Indexer>>) o;
     }
 
     public Integer getTf() {

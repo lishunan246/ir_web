@@ -1,10 +1,7 @@
 package room713;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 /**
@@ -92,7 +89,7 @@ public class IR {
             System.out.println("read start!");
             FileInputStream fis = new FileInputStream(path+"/tokenMap1000.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            Tokenizer.tokenMap = (HashMap<String, HashMap<Integer, Indexer>>) ois.readObject();
+            Tokenizer.tokenMap = (HashMap<String, TreeMap<Integer, Indexer>>) ois.readObject();
             ois.close();
             fis.close();
             FileInputStream fis2 = new FileInputStream(path+"/passageNum1000.ser");
@@ -111,20 +108,52 @@ public class IR {
         }
     }
 
-    public static  ArrayList<Map.Entry<Integer,Double>> searchEntrance(String query) {
+    public static ArrayList<Map.Entry<Integer,Double>> searchEntrance(String query, String type) {
 //        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
 //        IR ir2 = new IR();
 //        String input;
 
-        VSM vsm = new VSM(getPassageNum());
-        HashMap<Integer,Double> scoreresult;
+        Topk topk = null;
+
+        switch (type) {
+            case "TextSearch":
+                VSM vsm = new VSM(getPassageNum());
+                HashMap<Integer, Double> scoreresult;
 
 //        System.out.println("input a string");
 //        Scanner in = new Scanner(System.in);
 //        input = in.nextLine();
-        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
-        scoreresult = vsm.score(tknz2.tokenize(query, true));
-        Topk topk = new Topk(scoreresult);
+//            Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
+                scoreresult = vsm.score(Tokenizer.tokenize(query, true));
+                topk = new Topk(scoreresult);
+
+                break;
+            case "BoolSearch":
+                ArrayList<ArrayList<String>> boolQueryList = new ArrayList<>();
+                ArrayList<String> queryList = tokenizeWithStopwordNoStem(query);
+                ArrayList<String> insideList = new ArrayList<>();
+                for (String queryTerm : queryList) {
+                    if (!queryTerm.equalsIgnoreCase("and")) {
+                        insideList.add(Tokenizer.stemTerm(queryTerm));
+                    } else {
+                        boolQueryList.add(insideList);
+                        insideList = new ArrayList<>();
+                    }
+                }
+                boolQueryList.add(insideList);
+                BoolSearch bs = new BoolSearch();
+                HashMap<Integer, Double> boolResult = bs.score(bs.find(boolQueryList), Tokenizer.tokenize(query, true));
+                topk = new Topk(boolResult);
+
+                break;
+            case "PhraseSearch":
+
+                break;
+            default:
+                return null;
+        }
+
+
         //PriorityQueue<Map.Entry<Integer,Double>> topKeyResult = topk.getResult();
         return topk.getResult();
 
@@ -133,9 +162,9 @@ public class IR {
     }
 
     public static ArrayList<String> spellCorrect(String query){
-        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
+//        Tokenizer tknz2 = new Tokenizer(path+"/stopwords.txt");
         SpellCorrector sc = new SpellCorrector();
-        return sc.correct(tknz2.tokenize(query, false));
+        return sc.correct(Tokenizer.tokenize(query, false));
     }
 
     public static ArrayList<String> tokenizeWithStopwordNoStem(String text){

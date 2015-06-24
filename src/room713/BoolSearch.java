@@ -1,9 +1,6 @@
 package room713;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lvdon_000 on 2015/6/24.
@@ -17,7 +14,7 @@ public class BoolSearch {
             ArrayList<String> innerlist = outerlist.get(i);
             ArrayList<Integer> sub_or_result =new ArrayList<Integer>();
             for(int j = 0;j<innerlist.size();j++){//inner loop
-                HashMap<Integer, Indexer>  temp = Tokenizer.tokenMap.get(innerlist.get(j));
+                TreeMap<Integer, Indexer> temp = Tokenizer.tokenMap.get(innerlist.get(j));
                 Iterator iter = temp.entrySet().iterator();
                 while (iter.hasNext()) {
                     Map.Entry entry = (Map.Entry) iter.next();
@@ -26,7 +23,9 @@ public class BoolSearch {
                         sub_or_result.add(key);
                     }
                 }
+
             }
+            or_result.add(sub_or_result);
         }
         //与运算
         for(int i = 0; i < or_result.size(); i ++){
@@ -59,7 +58,7 @@ public class BoolSearch {
 
         return result;
     }
-    public  HashMap<Integer,Double> score(ArrayList<Integer> docID,ArrayList Query){
+    public  HashMap<Integer,Double> score(ArrayList<Integer> docID,ArrayList<String> Query){
         HashMap<Integer,Double> result = new HashMap<Integer,Double>();
 
         for(int i = 0;i < docID.size() ; i++){
@@ -69,10 +68,10 @@ public class BoolSearch {
 
                 for(int j = 0;j <Query.size(); j ++){
                     if(Tokenizer.tokenMap.containsKey(Query.get(j))) {
-                        temp2 = Tokenizer.tokenMap.get(Query.get(j));
-                        if (temp2.containsKey(key)) {
+                        TreeMap<Integer, Indexer> temp2 = Tokenizer.tokenMap.get(Query.get(j));
+                        if (temp2.containsKey(docID.get(i))) {
 
-                            float tf = temp2.get(key).getTf();
+                            float tf = temp2.get(docID.get(i)).getTf();
                             wf = 1 + Math.log(tf);
                             wf_idf = wf_idf + wf ;
                             fenmu = fenmu + Math.pow(wf_idf, 2);
