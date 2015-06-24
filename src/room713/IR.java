@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
  */
 public class IR {
     private static String path=System.getProperty("user.home")+"/ir_resource";
+
     private static Integer passageNum = 0;
     private static Boolean flag = true;
 
@@ -31,6 +32,7 @@ public class IR {
         String line;
         String passage;
         Tokenizer tknz = new Tokenizer(path +"/stopwords.txt");
+
         for(Integer i=from; i<=to; i++){
             passage = "";
             filename = path+ "/Reuters/" + i.toString() + ".html";
