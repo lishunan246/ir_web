@@ -153,7 +153,6 @@ public class IR {
                 return null;
         }
 
-
         //PriorityQueue<Map.Entry<Integer,Double>> topKeyResult = topk.getResult();
         return topk.getResult();
 
