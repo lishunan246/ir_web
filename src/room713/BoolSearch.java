@@ -7,23 +7,24 @@ import java.util.*;
  */
 public class BoolSearch {
     public ArrayList<Integer> find(ArrayList<ArrayList<String>> outerlist){
-        ArrayList<Integer> result = new ArrayList<Integer>();//总结果
-        ArrayList<ArrayList<Integer>> or_result = new ArrayList<ArrayList<Integer>> ();//或运算结果集合
+        ArrayList<Integer> result = new ArrayList<>();//总结果
+        ArrayList<ArrayList<Integer>> or_result = new ArrayList<>();//或运算结果集合
         //得到或运算的结果集合
         for (int i = 0;i < outerlist.size(); i ++){// outer loop
             ArrayList<String> innerlist = outerlist.get(i);
-            ArrayList<Integer> sub_or_result =new ArrayList<Integer>();
-            for(int j = 0;j<innerlist.size();j++){//inner loop
-                TreeMap<Integer, Indexer> temp = Tokenizer.tokenMap.get(innerlist.get(j));
-                Iterator iter = temp.entrySet().iterator();
-                while (iter.hasNext()) {
-                    Map.Entry entry = (Map.Entry) iter.next();
-                    Integer key = (Integer) entry.getKey();
-                    if(!sub_or_result.contains(key)){
-                        sub_or_result.add(key);
+            ArrayList<Integer> sub_or_result =new ArrayList<>();
+            for(int j = 0;j<innerlist.size();j++) {//inner loop
+                if (Tokenizer.tokenMap.containsKey(innerlist.get(j))) {
+                    TreeMap<Integer, Indexer> temp = Tokenizer.tokenMap.get(innerlist.get(j));
+                    Iterator iter = temp.entrySet().iterator();
+                    while (iter.hasNext()) {
+                        Map.Entry entry = (Map.Entry) iter.next();
+                        Integer key = (Integer) entry.getKey();
+                        if (!sub_or_result.contains(key)) {
+                            sub_or_result.add(key);
+                        }
                     }
                 }
-
             }
             or_result.add(sub_or_result);
         }
@@ -39,7 +40,7 @@ public class BoolSearch {
                 int j = 0;
                 int k = 0;
 
-                ArrayList<Integer>temp = new ArrayList<Integer>();
+                ArrayList<Integer>temp = new ArrayList<>();
                 while((j<jmax)&(k<kmax)){
                     if(result.get(j)<secondlist.get(k)){
                         j++;
@@ -59,7 +60,7 @@ public class BoolSearch {
         return result;
     }
     public  HashMap<Integer,Double> score(ArrayList<Integer> docID,ArrayList<String> Query){
-        HashMap<Integer,Double> result = new HashMap<Integer,Double>();
+        HashMap<Integer,Double> result = new HashMap<>();
 
         for(int i = 0;i < docID.size() ; i++){
 

@@ -1,3 +1,5 @@
+<%@ page import="room713.Tokenizer" %>
+<%@ page import="java.util.ArrayList" %>
 <%--
   Created by IntelliJ IDEA.
   User: Li Shunan
@@ -58,7 +60,13 @@
     myHilitor.setMatchType("open");
     myHilitor.apply("<%
         String keyword=request.getParameter("keyword");
-        out.print(keyword);
+        ArrayList<String> noStopwordList = Tokenizer.tokenize(keyword, false);
+        String outputKeyword = "";
+        for(String word: noStopwordList){
+            outputKeyword += " " + word;
+        }
+        out.print(outputKeyword.substring(1));
+//        out.print(keyword);
     %>");
 
 

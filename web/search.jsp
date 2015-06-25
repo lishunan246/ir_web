@@ -160,7 +160,12 @@
     var myHilitor = new Hilitor("result_table");
     myHilitor.setMatchType("open");
     myHilitor.apply("<%
-        out.print(keyword);
+        ArrayList<String> noStopwordList = Tokenizer.tokenize(keyword, false);
+        String outputKeyword = "";
+        for(String word: noStopwordList){
+            outputKeyword += " " + word;
+        }
+        out.print(outputKeyword.substring(1));
     %>");
 
 
