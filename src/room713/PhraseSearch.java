@@ -12,6 +12,7 @@ public class PhraseSearch {
     PhraseSearch(ArrayList<String> q){
 
         Query = q;
+        //System.out.println(Query);
         result = new ArrayList<>();
     }
 
@@ -20,8 +21,14 @@ public class PhraseSearch {
         Set<Integer> docSet = new HashSet<>();
         boolean first = true;
         for(String item :Query){
+            System.out.println(item);
             TreeMap<Integer,Indexer> temp = Tokenizer.tokenMap.get(item);
-            Set<Integer> s = temp.keySet();     //the set of docID which contains item
+//            System.out.println(temp);
+            Set<Integer> s = null;
+            if(temp==null)
+                return result;
+            s = temp.keySet();     //the set of docID which contains item
+            //System.out.println(s);
             if(first){
                 docSet.addAll(s);
                 first = false;
@@ -30,7 +37,7 @@ public class PhraseSearch {
                 docSet.retainAll(s);
             }
             if(docSet.size()==0)
-                break;
+                return result;
         }
         for(int docId:docSet){
 //            for(String item:Query){

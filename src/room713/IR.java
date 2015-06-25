@@ -147,8 +147,11 @@ public class IR {
 
                 break;
             case "PhraseSearch":
-
-
+                PhraseSearch ps = new PhraseSearch(Tokenizer.tokenize(query, true));
+                ArrayList<Integer> psResult = ps.getResult();
+                bs = new BoolSearch();
+                HashMap<Integer, Double> psboolResult = bs.score(psResult,Tokenizer.tokenize(query, true));
+                topk = new Topk(psboolResult);
                 break;
             default:
                 return null;
