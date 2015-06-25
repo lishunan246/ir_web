@@ -2,7 +2,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="room713.Tokenizer" %>
-<%@ page import="javax.swing.text.StyledEditorKit" %>
 <%--
   Created by IntelliJ IDEA.
   User: Li Shunan
@@ -41,7 +40,7 @@
                     String keyword = request.getParameter("keyword");
                     String t=request.getParameter("p");
                     //Set<Integer> set = IR.searchEntrance(keyword);
-                    String type = "BoolSearch";
+                    String type = request.getParameter("type");
                     ArrayList<Map.Entry<Integer,Double>> list = IR.searchEntrance(keyword, type);
                     ArrayList<String> queryList = IR.tokenizeWithStopwordNoStem(keyword);
                     ArrayList<String> corrected = IR.spellCorrect(keyword);
@@ -62,7 +61,7 @@
                     }
 
                     //ArrayList<Map.Entry<Integer, Double>> list = IR.searchEntrance(keyword);
-                    int count=list.size();
+                    int count= list != null ? list.size() : 0;
                     int p_count=(count%10==0)?count/10:count/10+1;
                     int p=1;
                     if(t!=null)
@@ -89,6 +88,7 @@
                 %>？</a>
             </p>
             <%}
+                assert list != null;
                 if(list.size()!=0)
                 {
             %>
@@ -137,14 +137,14 @@
                 {
 
                 %>
-                <li><a href="search.jsp?keyword=<% out.print(keyword); %>&p=<% out.print(p-1);%>">上一页</a></li>
+                <li><a href="search.jsp?keyword=<% out.print(keyword); %>&p=<% out.print(p-1);%>&type=<% out.print(type);%>">上一页</a></li>
                 <%
                     }
 
                     if((p+1)<=p_count)
                     {
                 %>
-                <li><a href="search.jsp?keyword=<% out.print(keyword); %>&p=<% out.print(p+1);%>">下一页</a></li>
+                <li><a href="search.jsp?keyword=<% out.print(keyword); %>&p=<% out.print(p+1);%>&type=<% out.print(type);%>">下一页</a></li>
                 <%
                     }
                 %>
