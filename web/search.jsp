@@ -53,7 +53,7 @@
                         if(Tokenizer.stopwords.contains(query)){
                             correctString += " " + query;
                         }else{
-                            if(!query.equals(corrected.get(k))){
+                            if(!query.equalsIgnoreCase(corrected.get(k))){
                                 wrong = true;
                             }
                             correctString += " " + corrected.get(k++);
@@ -78,7 +78,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <% if(wrong){%>
-            <p><a href="search.jsp?keyword=<% out.print(correctString.substring(1));%>">
+            <p><a href="search.jsp?keyword=<% out.print(correctString.substring(1));%>&type=<% out.print(type); %>">
                 你是否要搜索
                 <%
 
