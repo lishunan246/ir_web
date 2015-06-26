@@ -65,8 +65,10 @@
         for(String word: noStopwordList){
             outputKeyword += " " + word;
         }
-        out.print(outputKeyword.substring(1));
-//        out.print(keyword);
+        if(outputKeyword.length() != 0){
+            out.print(outputKeyword.substring(1));
+        }
+//  out.print(keyword);
     %>");
 
 

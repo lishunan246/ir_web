@@ -113,7 +113,7 @@ public class IR {
 //        IR ir2 = new IR();
 //        String input;
 
-        Topk topk = null;
+        Topk topk;
 
         switch (type) {
             case "TextSearch":
@@ -134,7 +134,8 @@ public class IR {
                 ArrayList<String> insideList = new ArrayList<>();
                 for (String queryTerm : queryList) {
                     if (!queryTerm.equalsIgnoreCase("and")) {
-                        insideList.add(Tokenizer.stemTerm(queryTerm));
+                        if(!Tokenizer.isStopword(queryTerm))
+                            insideList.add(Tokenizer.stemTerm(queryTerm));
                     } else {
                         boolQueryList.add(insideList);
                         insideList = new ArrayList<>();

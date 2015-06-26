@@ -165,7 +165,9 @@
         for(String word: noStopwordList){
             outputKeyword += " " + word;
         }
-        out.print(outputKeyword.substring(1));
+        if(outputKeyword.length() != 0){
+            out.print(outputKeyword.substring(1));
+        }
     %>");
 
 
