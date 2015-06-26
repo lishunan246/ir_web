@@ -1,3 +1,4 @@
+<%@ page import="room713.IR" %>
 <%--
   Created by IntelliJ IDEA.
   User: Li Shunan
@@ -6,7 +7,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% room713.IR.initialize();%>
+<%
+    if(IR.flag)
+        IR.initialize();
+%>
 <html>
 <head>
     <title>搜索</title>

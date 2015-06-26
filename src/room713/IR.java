@@ -12,13 +12,13 @@ public class IR {
     private static String path=System.getProperty("user.home")+"/ir_resource";
 
     private static Integer passageNum = 0;
-    private static Boolean flag = true;
+    public static Boolean flag = true;
 
     public static void initialize() {
         if (flag) {
+            flag = false;
             readIndex();
             Tokenizer tokenizer = new Tokenizer(path + "/stopwords.txt");
-            flag = false;
         }
         System.out.println("IR init!");
     }
@@ -60,12 +60,12 @@ public class IR {
 
     public static void buildIndex(){
         System.out.println("build start!");
-        readFile(1, 1000);
+        readFile(1, 21576);
 
         try {
-            FileOutputStream fos = new FileOutputStream(path+"/tokenMap1000.ser");
-            FileOutputStream fos2 = new FileOutputStream(path +"/passageNum1000.ser");
-            FileOutputStream fos3 = new FileOutputStream(path +"/dictMap1000.ser");
+            FileOutputStream fos = new FileOutputStream(path+"/tokenMap.ser");
+            FileOutputStream fos2 = new FileOutputStream(path +"/passageNum.ser");
+            FileOutputStream fos3 = new FileOutputStream(path +"/dictMap.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
             ObjectOutputStream oos3 = new ObjectOutputStream(fos3);
@@ -87,17 +87,17 @@ public class IR {
     public static void readIndex(){
         try {
             System.out.println("read start!");
-            FileInputStream fis = new FileInputStream(path+"/tokenMap1000.ser");
+            FileInputStream fis = new FileInputStream(path+"/tokenMap.ser");
             ObjectInputStream ois = new ObjectInputStream(fis);
             Tokenizer.tokenMap = (HashMap<String, TreeMap<Integer, Indexer>>) ois.readObject();
             ois.close();
             fis.close();
-            FileInputStream fis2 = new FileInputStream(path+"/passageNum1000.ser");
+            FileInputStream fis2 = new FileInputStream(path+"/passageNum.ser");
             ObjectInputStream ois2 = new ObjectInputStream(fis2);
             setPassageNum((Integer) ois2.readObject());
             ois2.close();
             fis2.close();
-            FileInputStream fis3 = new FileInputStream(path+"/dictMap1000.ser");
+            FileInputStream fis3 = new FileInputStream(path+"/dictMap.ser");
             ObjectInputStream ois3 = new ObjectInputStream(fis3);
             Tokenizer.dictMap = (HashMap<String, Integer>) ois3.readObject();
             ois3.close();
