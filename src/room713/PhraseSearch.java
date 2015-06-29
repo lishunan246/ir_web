@@ -21,7 +21,7 @@ public class PhraseSearch {
         Set<Integer> docSet = new HashSet<>();
         boolean first = true;
         for(String item :Query){
-            System.out.println(item);
+//            System.out.println(item);
             TreeMap<Integer,Indexer> temp = Tokenizer.tokenMap.get(item);
 //            System.out.println(temp);
             Set<Integer> s = null;
